@@ -39,4 +39,20 @@ public class ChampionResource {
         ChampionEntity championEntity = championController.update(id, champ);
         return Response.ok(championEntity).build();
     }
+
+    @DELETE
+    @Path("{id}")
+    @Transactional
+    public Response delete(@PathParam("id") Long id){
+        ChampionEntity champion = ChampionEntity.findById(id);
+
+        if(champion == null
+        )
+            throw new WebApplicationException("Champion with id " + id + " does not exist.", Response.Status.NOT_FOUND);
+        champion.delete();
+        return Response.status(204).build();
+
+    }
+
+
 }
