@@ -1,27 +1,15 @@
 package dev.Controller;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 
 @Entity
+@Getter
+@Setter
 public class ChampionEntity extends PanacheEntity {
     private String nome;
     private String regiao;
-
-    public String getNome(){
-        return this.nome;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
-    }
-
-    public String getRegiao(){
-        return this.regiao;
-    }
-
-    public void setRegiao(String regiao){
-        this.regiao = regiao;
-    }
 }
