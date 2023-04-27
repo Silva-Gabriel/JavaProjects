@@ -10,9 +10,12 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import javax.inject.Inject;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
+import java.util.Set;
 
 @Path("/users")
 @Table(name="users")
@@ -21,15 +24,24 @@ import javax.ws.rs.core.MediaType;
 public class UserResource {
 
     private final UserRepository repository;
+    private final Validator validator;
 
     @Inject
-    public UserResource(UserRepository repository){
+    public UserResource(UserRepository repository, Validator validator){
         this.repository = repository;
+        this.validator = validator;
     }
 
     @POST
     @Transactional
     public Response createUser(CreateUserRequest userRequest){
+        Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
+        if(!violations.isEmpty()){
+            ConstraintViolation<CreateUserRequest> erro = violations.stream().findAny().get();
+            String errorMessage = erro.getMessage();
+            return Response.status(400).entity(errorMessage).build();
+        }
+
         User user = new User();
         user.setNome(userRequest.getNome());
         user.setIdade(userRequest.getIdade());
