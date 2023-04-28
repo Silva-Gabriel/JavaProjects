@@ -1,14 +1,12 @@
 package dev.gabriel.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "users")
 public class User {
 

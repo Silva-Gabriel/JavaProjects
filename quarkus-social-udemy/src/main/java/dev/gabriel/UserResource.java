@@ -3,6 +3,7 @@ package dev.gabriel;
 import dev.gabriel.domain.model.User;
 import dev.gabriel.domain.repository.UserRepository;
 import dev.gabriel.dto.CreateUserRequest;
+import dev.gabriel.dto.ResponseError;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 
@@ -36,16 +37,14 @@ public class UserResource {
     public Response createUser(CreateUserRequest userRequest){
         Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
         if(!violations.isEmpty()){
-            ConstraintViolation<CreateUserRequest> erro = violations.stream().findAny().get();
-            String errorMessage = erro.getMessage();
-            return Response.status(400).entity(errorMessage).build();
+            return ResponseError.createFromValidation(violations).withStatusCode(ResponseError.UNPROCESSABLE_ENTITY_STATUS);
         }
 
         User user = new User();
         user.setName(userRequest.getName());
         user.setAge(userRequest.getAge());
         repository.persist(user);
-        return Response.ok(user).build();
+        return Response.status(201).entity(user).build();
     }
 
     @GET
@@ -61,7 +60,7 @@ public class UserResource {
         User user = repository.findById(id);
         if(user != null){
             repository.delete(user);
-            return Response.ok().build();
+            return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
@@ -75,7 +74,7 @@ public class UserResource {
         if(user != null){
             user.setName(userRequest.getName());
             user.setAge(userRequest.getAge());
-            return Response.ok().build();
+            return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }

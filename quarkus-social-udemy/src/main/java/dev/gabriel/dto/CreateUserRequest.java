@@ -1,16 +1,15 @@
 package dev.gabriel.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Data
 public class CreateUserRequest {
-    @NotBlank(message="O campo nome é obrigatório")
+    @NotBlank(message="The field name is required")
     private String name;
-    @NotNull(message="O campo idade é obrigatório")
+    @NotNull(message="The field age is required")
     private Integer age;
 }
