@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class CreateUserRequest {
     @NotBlank(message="O campo nome é obrigatório")
-    private String nome;
+    private String name;
     @NotNull(message="O campo idade é obrigatório")
-    private Integer idade;
+    private Integer age;
 }

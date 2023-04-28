@@ -3,7 +3,6 @@ package dev.gabriel;
 import dev.gabriel.domain.model.User;
 import dev.gabriel.domain.repository.UserRepository;
 import dev.gabriel.dto.CreateUserRequest;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 
@@ -43,8 +42,8 @@ public class UserResource {
         }
 
         User user = new User();
-        user.setNome(userRequest.getNome());
-        user.setIdade(userRequest.getIdade());
+        user.setName(userRequest.getName());
+        user.setAge(userRequest.getAge());
         repository.persist(user);
         return Response.ok(user).build();
     }
@@ -74,8 +73,8 @@ public class UserResource {
         User user = repository.findById(id);
 
         if(user != null){
-            user.setNome(userRequest.getNome());
-            user.setIdade(userRequest.getIdade());
+            user.setName(userRequest.getName());
+            user.setAge(userRequest.getAge());
             return Response.ok().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
